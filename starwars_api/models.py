@@ -22,7 +22,7 @@ class BaseModel(object):
         Returns an object of current Model requesting data to SWAPI using
         the api_client.
         """
-        method = getattr(api_client,"get_"+cls.RESOURCE_NAME)
+        method = getattr(api_client,"get_" + cls.RESOURCE_NAME)
         result = method(resource_id)
         return BaseModel(result)
 
@@ -64,7 +64,7 @@ class BaseQuerySet(object):
         self.index = 0
         self.max_iterations=0
         self.subclass = subclass
-        self.get_data = getattr(api_client, 'get_'+ self.subclass.RESOURCE_NAME)
+        self.get_data = getattr(api_client, 'get_' + self.subclass.RESOURCE_NAME)
         self.page = 1
 
     def __iter__(self):
