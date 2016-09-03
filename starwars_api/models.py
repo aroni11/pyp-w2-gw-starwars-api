@@ -22,10 +22,10 @@ class BaseModel(object):
         Returns an object of current Model requesting data to SWAPI using
         the api_client.
         """
-		method = getattr(api_client,"get_" + cls.RESOURCE_NAME)
-		result = method(resource_id)
-        
-		return BaseModel(result)
+        method=getattr(api_client,"get_"+cls.RESOURCE_NAME)
+        result=method(resource_id)
+		
+        return BaseModel(result)
 
     @classmethod
     def all(cls):
