@@ -24,7 +24,8 @@ class BaseModel(object):
         """
         method = getattr(api_client,"get_" + cls.RESOURCE_NAME)
         result = method(resource_id)
-        return BaseModel(result)
+        
+		return BaseModel(result)
 
     @classmethod
     def all(cls):
@@ -33,8 +34,10 @@ class BaseModel(object):
         later in charge of performing requests to SWAPI for each of the
         pages while looping.
         """
+        name_of_child = cls.RESOURCE_NAME.title()
+        result = eval(name_of_child+"QuerySet")
         
-        return BaseQuerySet(cls)
+        return result()
         
 
 class People(BaseModel):
@@ -60,12 +63,11 @@ class Films(BaseModel):
 
 class BaseQuerySet(object):
 
-    def __init__(self, subclass):
+    def __init__(self):
         self.index = 0
         self.max_iterations=0
-        self.subclass = subclass
-        self.get_data = getattr(api_client, 'get_' + self.subclass.RESOURCE_NAME)
-        self.page = 1
+        self.get_data = getattr(api_client, 'get_' + self.RESOURCE_NAME)
+		self.page = 1
 
     def __iter__(self):
         return self
@@ -75,20 +77,18 @@ class BaseQuerySet(object):
         Must handle requests to next pages in SWAPI when objects in the current
         page were all consumed.
         """
-        data = self.get_data("page="+str(self.page))
+        data =  self.get_data("page="+str(self.page))
         
         if self.max_iterations != data["count"]:
             obj = data["results"][self.index]
-            if self.subclass.RESOURCE_NAME=="people":
-                result = People(obj)
-            else:
-                result = Films(obj)
             self.max_iterations += 1
             if self.index < len(data["results"]) - 1:
                 self.index += 1
             else:
                 self.index = 0
-            return result
+            result = eval(self.RESOURCE_NAME.title())
+            
+			return result(obj)
         else:
             raise StopIteration()
             
