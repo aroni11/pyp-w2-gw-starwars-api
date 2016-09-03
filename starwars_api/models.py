@@ -87,11 +87,9 @@ class BaseQuerySet(object):
             else:
                 self.index = 0
             result = eval(self.RESOURCE_NAME.title())
-            
-        return result(obj)
+            return result(obj)
         else:
             raise StopIteration()
-            
     next = __next__
 
     def count(self):
