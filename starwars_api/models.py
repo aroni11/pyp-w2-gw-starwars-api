@@ -67,7 +67,7 @@ class BaseQuerySet(object):
         self.index = 0
         self.max_iterations=0
         self.get_data = getattr(api_client, 'get_' + self.RESOURCE_NAME)
-		self.page = 1
+        self.page = 1
 
     def __iter__(self):
         return self
@@ -88,7 +88,7 @@ class BaseQuerySet(object):
                 self.index = 0
             result = eval(self.RESOURCE_NAME.title())
             
-			return result(obj)
+        return result(obj)
         else:
             raise StopIteration()
             
